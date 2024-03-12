@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use("/api/v1",router);
 app.get("/baba",()=>{
-    re.send("Baba is Here")
+    res.send("Baba is Here")
 })
 dbConnect();
 app.listen(PORT,()=>{
