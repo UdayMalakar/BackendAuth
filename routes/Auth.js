@@ -61,6 +61,7 @@ router.post("/signup",async(req,res)=>{
         .json({
             success:false,
             message:"Somthing Went wrong in this route",
+            error:error,
         })
     }
 });
