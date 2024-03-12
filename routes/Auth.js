@@ -1,7 +1,7 @@
 const express =require("express");
 const router=express.Router();
 const user=require("../models/userSchema")
-
+const bcrypt =require("bcrypt");
 router.post("/signup",async(req,res)=>{
     try{
         
@@ -27,19 +27,31 @@ router.post("/signup",async(req,res)=>{
             })
         };
 
-        const newUser =await user.create({
-            name,
-            email,
-            password
-        });
+        const hashedPassowrd = await bcrypt.hash(password,10);
 
-        newUser.password=undefined;
-        return res.status(200)
+        if(hashedPassowrd)
+        {
+            const newUser =await user.create({
+                name,
+                email,
+                password:hashedPassowrd
+            });    
+            return res.status(200)
+            .json({
+                success:true,
+                message:"User created Successfully",
+                newUser,
+            })
+        }
+        
+
+        return res.status(400)
         .json({
-            success:true,
-            message:"User created Successfully",
+            success:false,
+            message:"Password Not hashed",
             newUser,
         })
+      
 
 
     }catch(error)
